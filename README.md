@@ -1,4 +1,4 @@
-# Adonis fullstack application
+# Inventory Management API with Adonis
 
 This is the fullstack boilerplate for AdonisJs, it comes pre-configured with.
 
