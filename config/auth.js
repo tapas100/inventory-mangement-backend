@@ -16,7 +16,7 @@ module.exports = {
   | Available Serializers - lucid, database
   |
   */
-  authenticator: 'session',
+  authenticator: 'jwt',
 
   /*
   |--------------------------------------------------------------------------
@@ -27,42 +27,42 @@ module.exports = {
   | Session authentication is always persistent.
   |
   */
- session: {
-  serializer: 'LucidMongo',
-  model: 'App/Models/User',
-  scheme: 'session',
-  uid: 'email',
-  password: 'password'
-},
+  session: {
+    serializer: 'LucidMongo',
+    model: 'App/Models/User',
+    scheme: 'session',
+    uid: 'email',
+    password: 'password'
+  },
 
-basic: {
-  serializer: 'LucidMongo',
-  model: 'App/Models/User',
-  scheme: 'basic',
-  uid: 'email',
-  password: 'password'
-},
+  basic: {
+    serializer: 'LucidMongo',
+    model: 'App/Models/User',
+    scheme: 'basic',
+    uid: 'email',
+    password: 'password'
+  },
 
-jwt: {
-  serializer: 'LucidMongo',
-  model: 'App/Models/User',
-  token: 'App/Models/Token',
-  scheme: 'jwt',
-  uid: 'email',
-  password: 'password',
-  expiry: '20m',
-  options: {
-    secret: 'self::app.appKey'
+  jwt: {
+    serializer: 'LucidMongo',
+    model: 'App/Models/User',
+    token: 'App/Models/Token',
+    scheme: 'jwt',
+    uid: 'username',
+    password: 'password',
+    expiry: '20m',
+    options: {
+      secret: Env.get('APP_KEY')
+    }
+  },
+
+  api: {
+    serializer: 'LucidMongo',
+    scheme: 'api',
+    model: 'App/Models/User',
+    token: 'App/Models/Token',
+    uid: 'username',
+    password: '',
+    expiry: '30d',
   }
-},
-
-api: {
-  serializer: 'LucidMongo',
-  scheme: 'api',
-  model: 'App/Models/User',
-  token: 'App/Models/Token',
-  uid: 'username',
-  password: '',
-  expiry: '30d',
-}
 }

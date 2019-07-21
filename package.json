@@ -29,7 +29,7 @@
     "@adonisjs/shield": "^1.0.8",
     "@adonisjs/validator": "^5.0.6",
     "axios": "^0.19.0",
-    "lucid-mongo": "^3.1.2",
+    "lucid-mongo": "^3.1.6",
     "random-string": "^0.2.0"
   },
   "devDependencies": {},

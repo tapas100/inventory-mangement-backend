@@ -18,5 +18,14 @@ const Route = use('Route')
 
 Route.on('/').render('welcome')
 Route.group('/',() =>{
-    Route.post('register','Auth/RegisterController.register').as('register')
-}).prefix('api/v1')
+    Route.post('register','AuthController.register').as('register')
+    Route.post('login','AuthController.login').as('login')
+    Route.get('logout','AuthController.logout').as('logout').middleware('auth')
+}).prefix('api/v1/account')
+
+Route.group('/', ()=>{
+    Route.post('create','ProductController.store').as('create').middleware('auth')
+    Route.put('update/:id','ProductController.update').as('update').middleware('auth')
+    Route.delete('delete/:id','ProductController.delete').as('delete').middleware('auth')
+    Route.get('all','ProductController.index').as('all').middleware('auth')
+}).prefix('api/v1/product')
