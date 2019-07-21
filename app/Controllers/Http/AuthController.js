@@ -26,32 +26,50 @@ class AuthController {
                 user.uid = randomString({ length: 12 })
                 let accessToken = await auth.generate(user)
                 user = await user.save()
-                return response.json({ "user": user, "access_token": accessToken })
+                return response.json({ "user": user, "access_token": accessToken,message:'Registered Sucessfully !' })
             }
             catch (e) {
                 console.log(e);
-                return response.status(401).send({ error: 'Please try again', message: e });
+                return response.status(422).send({ message: 'Please try again', error: e });
             }
 
         }
         else {
-            return response.status(401).send({ error: 'Please try again', message: validation.messages() });
+            console.log(validation.messages());
+            if (validation.messages()[0].field == 'username' && validation.messages()[0].validation == 'unique') {
+                return response.status(422).send({ message: 'Username already exist..!', error: validation.messages() });
+            }
+            if (validation.messages()[0].field == 'email') {
+                if (validation.messages()[0].validation == 'unique') {
+                    return response.status(422).send({ message: 'Email already exist..!', error: validation.messages() });
+                }
+                if (validation.messages()[0].validation == 'email') {
+                    return response.status(422).send({ message: 'Please enter a valid email ..!', error: validation.messages() });
+                }
+            }
+            return response.status(422).send({ error: 'Please try again', message: validation.messages() });
         }
 
     }
-    async login({ request, auth, response }) {
+    async login({ request, auth, response, error }) {
         const username = request.input("username")
         const password = request.input("password");
         try {
             if (await auth.attempt(username, password)) {
                 let user = await User.findBy('username', username)
                 let accessToken = await auth.generate(user)
-                return response.json({ "user": user, "access_token": accessToken })
+                return response.status(200).json({ "user": user, "access_token": accessToken, message: 'Logged in sucessfully !' })
             }
 
         }
         catch (e) {
-            return response.json({ message: 'You first need to register!' })
+            if (e.passwordField && e.uidField == undefined) {
+                return response.status(422).json({ message: 'Oops wrong Password ! Please Try Again' })
+            }
+            else if (e.passwordField && e.uidField) {
+                return response.status(422).json({ message: 'No User Found on this Username ! Please Try Again' })
+            }
+            return response.status(422).json({ message: e })
         }
     }
     async logout({ auth, response }) {
