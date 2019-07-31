@@ -5,6 +5,16 @@
 
 ![](adonis.png)
 
+
+## Getting Started
+  
+  Install Node modules `npm install`
+  
+  Start MongoDB  `sudo service mongod start`
+  
+  Run the development server `adonis serve --dev`
+  
+
 This is the fullstack boilerplate for AdonisJs, it comes pre-configured with.
 
 1. Bodyparser
